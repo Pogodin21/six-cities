@@ -1,6 +1,6 @@
 import { TCity, TOffers } from "../types";
 
-export function changeCityAction(city: string) {
+export function changeCityAction(city: TCity) {
   return {
     type: 'city/changeCity',
     payload: city

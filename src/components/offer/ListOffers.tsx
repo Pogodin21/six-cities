@@ -14,15 +14,11 @@ function ListOffers({ offers, onListItemHover}: TListOffersProps) {
   function handleMouseEnter(id: string) {
     serActiveOfferId(id);
     onListItemHover(id)
-    
   };
   function handleMouseLeave() {
     serActiveOfferId(null);
     onListItemHover(null);
-  
   };
-
- 
 
   return (
     <React.Fragment>

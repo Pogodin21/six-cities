@@ -8,8 +8,9 @@ type TCardProps =  TOffer & {
 }
 
 
-function Card( {onMouseEnter, onMouseLeave, ...item}: TCardProps ) {
+function Card( {onMouseEnter, onMouseLeave, rating, ...item}: TCardProps ) {
   const previewImage = item.images[0];
+  const ratingPercentage = rating ? rating * 20 : 0 ;
   
   return (
     <article className="cities__card place-card" onMouseEnter={() => onMouseEnter(item.id)} onMouseLeave={onMouseLeave}>
@@ -39,7 +40,7 @@ function Card( {onMouseEnter, onMouseLeave, ...item}: TCardProps ) {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%' }}></span>
+            <span style={{ width: ratingPercentage + "%"}}></span>
             <span className="visually-hidden">Rating {item.rating}</span>
           </div>
         </div>

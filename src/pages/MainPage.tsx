@@ -1,29 +1,50 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import ListOffers from '../components/offer/ListOffers';
-import { TCity, TOffer, TOffers } from '../types';
+import { TCity, TOffer } from '../types';
 import { Header } from '../components/header';
 import Map from '../components/map/map';
 import { useAppDispatch, useAppSelector } from '../store';
-import { changeCityAction, setOffersAction } from '../store/action';
-import LicationList from '../components/location/LocationList';
-
+import { changeCityAction } from '../store/action';
+import LocationList from '../components/location/LocationList';
+import PlacesSorting from '../components/PlacesSorting';
 
 function Main() {
-
-  const {offers, city} = useAppSelector((state) => state.main);
   const [selectedPoint, setSelectedPoint] = useState<TOffer | undefined>(undefined);
-  const dispatch = useAppDispatch()
+  const { offers, city } = useAppSelector((state) => state.main);
+  const dispatch = useAppDispatch();
+  
+  // Хендлер для смены города
+  const handleCityChange = (newCity: TCity) => {
+    dispatch(changeCityAction(newCity));
+  };
 
-  console.log("city ", city)
-
+  // Хендлер для подсветки предложения при наведении
   const handleListItemHover = (listItemId: string | null) => {
-    const currentPoint = offers.find((point: TOffer ) =>  point.id === listItemId);
+    const currentPoint = offers.find((point: TOffer) => point.id === listItemId);
     setSelectedPoint(currentPoint);
   };
-
-  const handleCityChange = (newCity: string) => {
-    dispatch(changeCityAction(newCity))
-  };
+  
+  // Получение предложений для выбранного города
+  const currentCityOffers = useMemo(() => {
+    return offers.filter(offer => offer.city.name === city.name);
+  }, [offers, city]);
+  
+  // Функции сортировки
+  const sortingFunctions = {
+    "Price: low to high": (a: TOffer, b: TOffer) => a.price - b.price,
+    "Price: high to low": (a: TOffer, b: TOffer) => b.price - a.price,
+    "Top rated first": (a: TOffer, b: TOffer) => b.rating - a.rating,
+    "Popular": () => 0 // Сортировка по умолчанию (без сортировки)
+  } as const;
+  
+  type TSortOption = keyof typeof sortingFunctions;
+  
+  const [selectedSort, setSelectedSort] = useState<TSortOption>("Popular");
+  
+  // Отсортированные предложения
+  const sortedOffers = useMemo(() => {
+    return [...currentCityOffers].sort(sortingFunctions[selectedSort]);
+  }, [currentCityOffers, selectedSort]);
 
   return (
     <div className="page page--gray page--main">
@@ -32,31 +53,16 @@ function Main() {
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <LicationList currentCity={city.name} onCityChange={handleCityChange} />
+          <LocationList currentCity={city.name} onCityChange={handleCityChange} />
         </div>
         <div className="cities">
-
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{`${offers.length} places to stay in ${city.name}`}</b>
-              <form className="places__sorting" action="#" method="get" hidden>
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+              <b className="places__found">{`${currentCityOffers.length} places to stay in ${city.name}`}</b>
+              <PlacesSorting selectedSort={selectedSort} handleSortOffers={setSelectedSort} />
               <div className="cities__places-list places__list tabs__content">
-                <ListOffers offers={offers} onListItemHover={handleListItemHover} />
+                <ListOffers offers={sortedOffers} onListItemHover={handleListItemHover} />
               </div>
             </section>
             <div className="cities__right-section">
@@ -68,7 +74,6 @@ function Main() {
         </div>
       </main>
     </div>
-
   );
 }
 

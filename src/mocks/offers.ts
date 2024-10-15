@@ -46,7 +46,7 @@ export const offers: TOffers = [
     },
     isPremium: true,
     isFavorite: true,
-    rating: 4,
+    rating: 5,
     bedrooms: 1,
     maxAdults: 4
   },
@@ -98,7 +98,7 @@ export const offers: TOffers = [
     },
     isPremium: true,
     isFavorite: false,
-    rating: 4.9,
+    rating: 3,
     bedrooms: 1,
     maxAdults: 1
   },
@@ -172,6 +172,58 @@ export const offers: TOffers = [
     location: {
       latitude: 52.3809553943508,
       longitude: 4.939309666406198,
+      zoom: 16
+    },
+    goods: [
+      "Wi-Fi",
+      "Laptop friendly workspace",
+      "Cable TV",
+      "Breakfast",
+      "Washer",
+      "Washing machine",
+      "Baby seat",
+      "Air conditioning",
+      "Coffee machine",
+      "Fridge",
+      "Kitchen",
+      "Dishwasher"
+    ],
+    host: {
+      isPro: true,
+      name: "Angelina",
+      avatarUrl: "https://14.design.htmlacademy.pro/static/host/avatar-angelina.jpg"
+    },
+    isPremium: false,
+    isFavorite: true,
+    rating: 4.1,
+    bedrooms: 3,
+    maxAdults: 1
+  },
+  {
+    id: "57a3d904-c5d4-4a9e-855c-3090c56aa62c",
+    title: "The Joshua Tree House",
+    description: "Discover daily local life in city center, friendly neighborhood, clandestine casino, karaoke, old-style artisans, art gallery and artist studio downstairs.",
+    type: "house",
+    price: 395,
+    images: [
+      "https://14.design.htmlacademy.pro/static/hotel/3.jpg",
+      "https://14.design.htmlacademy.pro/static/hotel/8.jpg",
+      "https://14.design.htmlacademy.pro/static/hotel/15.jpg",
+      "https://14.design.htmlacademy.pro/static/hotel/9.jpg",
+      "https://14.design.htmlacademy.pro/static/hotel/19.jpg",
+      "https://14.design.htmlacademy.pro/static/hotel/2.jpg"
+    ],
+    city: {
+      name: "Dusseldorf",
+      location: {
+        latitude: 51.225402,
+        longitude: 6.776314,
+        zoom: 13
+      }
+    },
+    location: {
+      latitude: 51.210402,
+      longitude: 6.798314,
       zoom: 16
     },
     goods: [
