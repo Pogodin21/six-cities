@@ -1,15 +1,11 @@
-import { TCity, TOffers } from "../types";
+import { createAction } from "@reduxjs/toolkit";
 
-export function changeCityAction(city: TCity) {
-  return {
-    type: 'city/changeCity',
-    payload: city
-  };
-}
+export const Actions = {
+  CITY_CHANGE: 'CITY_CHANGE',
+  SET_OFFERS: 'SET_OFFERS'
+};
 
-export function setOffersAction(offers: TOffers) {
-  return {
-    type: 'offers/setOffers',
-    payload: offers
-  }
-}
+export const changeCityAction = createAction(Actions.CITY_CHANGE, (city) => { return { payload: city  }});
+export const setOffersAction = createAction(Actions.SET_OFFERS, (offers) => { return { payload: offers  }});
+
+

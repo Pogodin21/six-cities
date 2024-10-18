@@ -6,15 +6,15 @@ import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import { TOffer, TOffers } from '../../types';
 import { TCity } from '../../types';
 
-type TMap = {
+type TMapProps = {
   city: TCity
   offers: TOffers
   isMainPage: boolean
   selectedPoint?: TOffer | undefined
-}
-export default function Map({ city, offers, isMainPage,  selectedPoint }: TMap) {
+};
 
-  const mapRef = useRef(null);
+export default function Map({ city, offers, isMainPage, selectedPoint }: TMapProps) {
+  const mapRef = useRef<HTMLDivElement | null>(null);
   const map = useMap(mapRef, city);
 
   const defaultCustomIcon = leaflet.icon({
@@ -29,14 +29,21 @@ export default function Map({ city, offers, isMainPage,  selectedPoint }: TMap) 
     iconAnchor: [20, 40],
   });
 
-  let offersOnTheMap = offers; 
+  let offersOnTheMap = offers;
 
   if (!isMainPage) {
     offersOnTheMap = offers.filter(item => item !== selectedPoint)
-  }
+  };
 
   useEffect(() => {
     if (map) {
+
+      (map as leaflet.Map).eachLayer((layer) => {
+        if (layer instanceof leaflet.Marker) {
+          (map as leaflet.Map).removeLayer(layer);
+        }
+      });
+
       offersOnTheMap.forEach((point: TOffer) => {
         leaflet
           .marker({

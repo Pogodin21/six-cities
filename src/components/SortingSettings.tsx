@@ -2,11 +2,16 @@ import { useState } from "react";
 
 type TPlacesSortingProps = {
   selectedSort: string;
-  handleSortOffers: (opinion: string) => void;
+  handleSortOffers: (opinion: "Price: low to high" | "Price: high to low" | "Top rated first" | "Popular") => void;
 }
 
-function PlacesSorting({selectedSort, handleSortOffers }: TPlacesSortingProps) {
-  const sortingOptions = [
+function SortingSettings({selectedSort, handleSortOffers }: TPlacesSortingProps) {
+  const sortingOptions: [
+    "Popular",
+    "Price: low to high",
+    "Price: high to low",
+    "Top rated first"
+  ] = [
     "Popular",
     "Price: low to high",
     "Price: high to low",
@@ -34,6 +39,7 @@ function PlacesSorting({selectedSort, handleSortOffers }: TPlacesSortingProps) {
         {sortingOptions.map((opinion) => {
           return (
             <li
+              key={opinion}
               className={`places__option places__option${selectedSort === opinion ? "--active" : ""}`}
               onClick={() => handleSortOffers(opinion)}
               tabIndex={0}
@@ -47,4 +53,4 @@ function PlacesSorting({selectedSort, handleSortOffers }: TPlacesSortingProps) {
   )
 }
 
-export default PlacesSorting;
+export default SortingSettings;

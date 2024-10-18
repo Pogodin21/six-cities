@@ -1,14 +1,19 @@
-import {useEffect, useState, useRef} from 'react';
+import { useEffect, useState, useRef } from 'react';
 import leaflet from 'leaflet';
+import { TCity } from '../types'; 
 
-
-function useMap(mapRef, city) {
-  const [map, setMap] = useState(null);
+function useMap(mapRef: React.RefObject<HTMLDivElement>, city: TCity) {
+  const [map, setMap] = useState<leaflet.Map | null>(null); 
   const isRenderedRef = useRef(false);
 
   useEffect(() => {
+    if (map) {
+      map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
+    }
+  }, [map, city]);
+
+  useEffect(() => {
     if (mapRef.current !== null && !isRenderedRef.current) {
-      
       const instance = leaflet.map(mapRef.current, {
         center: {
           lat: city.location.latitude,

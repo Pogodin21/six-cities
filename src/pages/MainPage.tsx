@@ -6,7 +6,7 @@ import Map from '../components/map/map';
 import { useAppDispatch, useAppSelector } from '../store';
 import { changeCityAction } from '../store/action';
 import LocationList from '../components/location/LocationList';
-import PlacesSorting from '../components/PlacesSorting';
+import SortingSettings from '../components/SortingSettings';
 
 function Main() {
   const [selectedPoint, setSelectedPoint] = useState<TOffer | undefined>(undefined);
@@ -60,14 +60,14 @@ function Main() {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{`${currentCityOffers.length} places to stay in ${city.name}`}</b>
-              <PlacesSorting selectedSort={selectedSort} handleSortOffers={setSelectedSort} />
+              <SortingSettings selectedSort={selectedSort} handleSortOffers={setSelectedSort} />
               <div className="cities__places-list places__list tabs__content">
                 <ListOffers offers={sortedOffers} onListItemHover={handleListItemHover} />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={city} offers={offers} isMainPage={true} selectedPoint={selectedPoint} />
+                <Map city={city} offers={sortedOffers} isMainPage={true} selectedPoint={selectedPoint} />
               </section>
             </div>
           </div>
